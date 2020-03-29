@@ -6,7 +6,7 @@ import tqdm
 
 def parse_args():
     parser = argparse.ArgumentParser(description='evaluate pytorch model in imagenet.')
-    parser.add_argument('--network', type=str, default='mobilenetv2_0.5', help="network name")
+    parser.add_argument('--network', type=str, default='mobilenetv3_small', help="network name")
     parser.add_argument('--weight_path', type=str, default='model', help='Weight of the model')
     parser.add_argument('--img-path', type=str, default='/home/xie/data/imagenet_val', help='Path of the images')
     parser.add_argument('--batch-size', type=int, default=64, help='batchsize')

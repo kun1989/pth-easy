@@ -1,6 +1,7 @@
 import torch
 from torch import nn
 import copy
+from ..pytorch_gluoncv_model_zoo.common import Conv2d
 
 def fuse_conv_bn_weights(conv_w, conv_b, bn_rm, bn_rv, bn_eps, bn_w, bn_b):
     if conv_b is None:
@@ -26,19 +27,18 @@ def fuse_conv_bn(conv, bn):
                              bn.running_mean, bn.running_var, bn.eps, bn.weight, bn.bias)
     return fused_conv
 
-def fuse_conv_bn_relu(conv, bn, relu):
-    return torch.nn.Sequential(fuse_conv_bn(conv, bn), relu)
+def fuse_conv_bn_act(conv, bn, act):
+    return torch.nn.Sequential(fuse_conv_bn(conv, bn), act)
 
 def fuse_model(module):
     mod = module
-    if type(module) == nn.Sequential and len(module) >= 2:
-        if type(getattr(module, '0')) == nn.Conv2d and \
-           type(getattr(module, '1')) == nn.BatchNorm2d:
-            if len(module) == 2:
-                mod = fuse_conv_bn(getattr(module, '0'), getattr(module, '1'))
-            else:
-                mod = fuse_conv_bn_relu(getattr(module, '0'), getattr(module, '1'), getattr(module, '2'))
-            return mod
+    if isinstance(module, Conv2d) and isinstance(module.norm, nn.BatchNorm2d):
+        if module.activation is not None:
+            mod = fuse_conv_bn_act(module.conv, module.norm, module.activation)
+        else:
+            mod = fuse_conv_bn(module.conv, module.norm)
+        return mod
+
     for name, child in module.named_children():
         mod.add_module(name, fuse_model(child))
     return mod

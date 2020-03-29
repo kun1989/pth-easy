@@ -6,7 +6,7 @@ import numpy as np
 
 def parse_args():
     parser = argparse.ArgumentParser(description='evaluate pytorch model in imagenet.')
-    parser.add_argument('--network', type=str, default='mobilenetv2_0.5', help="network name")
+    parser.add_argument('--network', type=str, default='mobilenetv3_small', help="network name")
     parser.add_argument('--weight_path', type=str, default='model', help='Weight of the model')
     args = parser.parse_args()
     return args

@@ -8,7 +8,7 @@ import os
 
 def parse_args():
     parser = argparse.ArgumentParser(description='covert gluoncv to pytorch model.')
-    parser.add_argument('--network', type=str, default='mobilenetv2_0.5', help="network name")
+    parser.add_argument('--network', type=str, default='mobilenetv3_small', help="network name")
     parser.add_argument('--save-path', type=str, default='model', help='Path of the model')
     args = parser.parse_args()
     return args
@@ -29,6 +29,8 @@ def convert(name, save_path):
     assert (len(gluon_params_keys) >= len(torch_params_keys))
 
     for i, (gl_key, th_key) in enumerate(zip(gluon_params_keys, torch_params_keys)):
+        t = torch_params[th_key].shape
+        g = gluon_params[gl_key].shape
         assert (torch_params[th_key].shape == gluon_params[gl_key].shape)
         torch_params[th_key].data.copy_(torch.from_numpy(gluon_params[gl_key]._data[0].asnumpy()))
 

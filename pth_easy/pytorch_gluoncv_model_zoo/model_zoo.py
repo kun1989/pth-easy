@@ -1,5 +1,6 @@
 from .mobilenetv1 import *
 from .mobilenetv2 import *
+from .mobilenetv3 import *
 
 __all__ = ['get_model', 'get_model_list']
 
@@ -12,6 +13,8 @@ _models = {
     'mobilenetv2_0.75': mobilenet_v2_0_75,
     'mobilenetv2_0.5': mobilenet_v2_0_5,
     'mobilenetv2_0.25': mobilenet_v2_0_25,
+    'mobilenetv3_large': mobilenet_v3_large,
+    'mobilenetv3_small': mobilenet_v3_small,
 }
 
 
