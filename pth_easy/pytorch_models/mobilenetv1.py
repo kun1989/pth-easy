@@ -1,5 +1,6 @@
+import torch
 from torch import nn
-from ..nn import Conv2d_1x1, DWConv2d, Conv2d
+from ..nn import Conv2d_1x1, DWConv2d, Conv2d, xavier_init, msra_init
 
 __all__ = [
     'MobileNetV1',
@@ -37,12 +38,22 @@ class MobileNetV1(nn.Module):
 
         self.output = nn.Linear(in_channels, classes)
 
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                msra_init(m)
+            elif isinstance(m, nn.BatchNorm2d):
+                nn.init.constant_(m.weight, 1)
+                nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.Linear):
+                xavier_init(m)
+
     def forward(self, x):
         x = self.conv1(x)
         for stage_name in self.stages:
             x = getattr(self, stage_name)(x)
         x = self.pool(x)
-        x = x.view(x.size(0), -1)
+        x = x.flatten(start_dim=1)
+        # x = x.view(x.size(0), -1)
         x = self.output(x)
         return x
 

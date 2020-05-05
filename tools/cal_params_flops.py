@@ -1,13 +1,12 @@
 import argparse
-from pth_easy.pytorch_gluoncv_model_zoo import get_model
+from pth_easy.pytorch_models import get_model
 from pth_easy.utils import params_count, count_flops
 import torch
 from fvcore.nn.flop_count import flop_count
-# from pth_easy.utils import fuse_model
 
 def parse_args():
     parser = argparse.ArgumentParser(description='evaluate pytorch model in imagenet.')
-    parser.add_argument('--network', type=str, default='MobileNetV3_Large', help="network name")
+    parser.add_argument('--network', type=str, default='mobilenet_v2_0.75', help="network name")
     args = parser.parse_args()
     return args
 

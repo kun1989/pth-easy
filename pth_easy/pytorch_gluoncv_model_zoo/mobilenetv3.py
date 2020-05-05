@@ -1,7 +1,7 @@
 import numpy as np
 from torch import nn
 import torch.nn.functional as F
-from .common import Conv2d_1x1, DWConv2d, Conv2d, get_act
+from ..nn import Conv2d_1x1, DWConv2d, Conv2d, get_act
 
 def make_divisible(x, divisible_by=8):
     return int(np.ceil(x * 1. / divisible_by) * divisible_by)

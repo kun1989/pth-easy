@@ -1,5 +1,6 @@
+import torch
 from torch import nn
-from ..nn import Conv2d_1x1, DWConv2d, Conv2d
+from ..nn import Conv2d_1x1, DWConv2d, Conv2d, xavier_init, msra_init
 
 __all__ = [
     'MobileNetV2',
@@ -66,7 +67,22 @@ class MobileNetV2(nn.Module):
 
         self.pool = nn.AvgPool2d(7)
 
-        self.output = nn.Conv2d(last_channels, classes, kernel_size=1, stride=1, padding=0, bias=False)
+        self.output = nn.Linear(last_channels, classes)
+
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                msra_init(m)
+            elif isinstance(m, nn.BatchNorm2d):
+                nn.init.constant_(m.weight, 1)
+                nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.Linear):
+                xavier_init(m)
+
+        # Zero-initialize the last BN in each residual branch,
+        for m in self.modules():
+            if isinstance(m, LinearBottleneck):
+                if m.use_shortcut:
+                   nn.init.constant_(m.conv[2].norm.weight, 0)
 
     def forward(self, x):
         x = self.conv1(x)
@@ -74,8 +90,9 @@ class MobileNetV2(nn.Module):
             x = getattr(self, stage_name)(x)
         x = self.last_conv(x)
         x = self.pool(x)
+        x = x.flatten(start_dim=1)
+        #x = x.view(x.size(0), -1)
         x = self.output(x)
-        x = x.view(x.size(0), -1)
         return x
 
 def get_mobilenetv2(multiplier=1.0):

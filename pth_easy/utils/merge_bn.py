@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 import copy
-from ..pytorch_gluoncv_model_zoo.common import Conv2d
+from ..nn import Conv2d
 
 def fuse_conv_bn_weights(conv_w, conv_b, bn_rm, bn_rv, bn_eps, bn_w, bn_b):
     if conv_b is None:

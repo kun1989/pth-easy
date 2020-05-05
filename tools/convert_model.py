@@ -8,7 +8,7 @@ import os
 
 def parse_args():
     parser = argparse.ArgumentParser(description='covert gluoncv to pytorch model.')
-    parser.add_argument('--network', type=str, default='mobilenetv3_small', help="network name")
+    parser.add_argument('--network', type=str, default='resnet50_v1', help="network name")
     parser.add_argument('--save-path', type=str, default='model', help='Path of the model')
     args = parser.parse_args()
     return args
