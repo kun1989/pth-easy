@@ -7,6 +7,15 @@ git clone https://github.com/kun1989/pth-easy.git
 cd pth_easy
 python setup.py develop
 ```
+# train imagenet models
+```
+see tools/train_imagenet.py
+use run.sh
+```
+# convert pytorch models to caffe models
+```
+see tools/torch2caffe.py
+```
 
 # convert gluoncv models to pytorch models
 ```
