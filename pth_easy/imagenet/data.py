@@ -168,6 +168,9 @@ def fast_collate(batch):
         if(nump_array.ndim < 3):
             nump_array = np.expand_dims(nump_array, axis=-1)
         nump_array = np.rollaxis(nump_array, 2)
+        #/opt/conda/conda-bld/pytorch_1587428094786/work/torch/csrc/utils/tensor_numpy.cpp:141: UserWarning: The given NumPy array is not writeable, and PyTorch does not support non-writeable tensors. This means you can write to the underlying (supposedly non-writeable) NumPy array using the tensor. You may want to copy the array to protect its data or make it writeable before converting it to a tensor. This type of warning will be suppressed for the rest of this program.
+        nump_array.flags.writeable=True #
+        #
         tensor[i] += torch.from_numpy(nump_array)
     return tensor, targets
 
