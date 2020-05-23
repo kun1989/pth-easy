@@ -6,7 +6,7 @@ from fvcore.nn.flop_count import flop_count
 
 def parse_args():
     parser = argparse.ArgumentParser(description='evaluate pytorch model in imagenet.')
-    parser.add_argument('--network', type=str, default='mobilenet_v2_0.75', help="network name")
+    parser.add_argument('--network', type=str, default='mobilenet_v2', help="network name")
     args = parser.parse_args()
     return args
 

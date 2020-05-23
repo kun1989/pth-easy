@@ -6,12 +6,12 @@ import tqdm
 
 def parse_args():
     parser = argparse.ArgumentParser(description='evaluate pytorch model in imagenet.')
-    parser.add_argument('--network', type=str, default='mobilenet_v1', help="network name")
-    parser.add_argument('--weight-path', type=str, default='mobilenet_v1/model_best.pth', help='Weight of the model')
-    parser.add_argument('--img-path', type=str, default='/home/ubuntu/fake_imagenet/val', help='Path of the images')
+    parser.add_argument('--network', type=str, default='mobilenet_v3', help="network name")
+    parser.add_argument('--weight-path', type=str, default='models/mobilenet_v3.pth', help='Weight of the model')
+    parser.add_argument('--img-path', type=str, default='/home/xie/data/imagenet_val', help='Path of the images')
     parser.add_argument('--batch-size', type=int, default=128, help='batchsize')
     parser.add_argument('--num-workers', type=int, default=4, help='num workers')
-    parser.add_argument("--type", type=str, default='dali', help='train type base|advance(data prefetch)|dali')
+    parser.add_argument("--type", type=str, default='advance', help='train type base|advance(data prefetch)|dali')
     args = parser.parse_args()
     return args
 
